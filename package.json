@@ -1,0 +1,74 @@
+{
+  "name": "jktnxt",
+  "version": "1.0.0",
+  "description": "JKTNXT Backend API",
+  "main": "index.js",
+  "dependencies": {
+    "@google/maps": "^0.1.0",
+    "amqplib": "^0.4.2",
+    "async": "^2.1.2",
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.4.1",
+    "body-parser": "^1.15.1",
+    "cache-manager": "^2.1.2",
+    "cache-manager-redis": "^0.4.0",
+    "cluster": "^0.7.7",
+    "content-disposition": "^0.5.2",
+    "dbgeo": "^1.0.1",
+    "destroy": "^1.0.4",
+    "dotenv": "^2.0.0",
+    "file-download": "^0.1.2",
+    "georedis": "^3.1.1",
+    "glob": "^7.1.1",
+    "joi": "^10.4.1",
+    "jsonwebtoken": "^7.0.1",
+    "knex": "^0.12.6",
+    "md5": "^2.2.1",
+    "moment": "^2.13.0",
+    "mongoose": "^4.9.3",
+    "multer": "^1.1.0",
+    "mv": "^2.1.1",
+    "mysql": "^2.11.0",
+    "node-fetch": "^1.6.3",
+    "os-tmpdir": "^1.0.2",
+    "pool2": "^1.3.4",
+    "ramda": "^0.22.1",
+    "redis": "^2.7.1",
+    "request": "^2.79.0",
+    "restify": "^4.3.0",
+    "restify-oauth2": "^4.0.4",
+    "slack-node": "^0.2.0",
+    "socket.io": "^1.7.3",
+    "supertest": "^2.0.1",
+    "terraformer": "^1.0.7",
+    "topojson": "^3.0.0",
+    "uuid": "^3.0.1",
+    "winston": "^2.2.0",
+    "winston-logstash": "^0.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2",
+    "supertest": "^2.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "./node_modules/.bin/mocha ./test/*/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.smartcity.jakarta.go.id/faisalrahman/jktnxt.git"
+  },
+  "keywords": [
+    "jktnxt"
+  ],
+  "author": "faizal.btg@gmail.com",
+  "license": "ISC",
+  "apidoc": {
+    "title": "Jaki's Documentation",
+    "name": "Jaki's Documentation",
+    "version": "0.1.0",
+    "description": "Documentation from Jaki's project"
+  }
+}

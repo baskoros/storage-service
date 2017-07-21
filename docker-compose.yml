@@ -1,0 +1,49 @@
+# version: '2'
+# services:
+  # users-service:
+  #   build: ./
+  #   container_name: jaki
+  #   ports:
+  #    - "3000:3000"
+  #   links:
+  #     - db:db
+  #   depends_on:
+  #    - db
+  #   environment:
+  #    - DATABASE_HOST=db
+  # db:
+  #   build: ./db
+
+
+
+version: '2'
+services:
+    jaki:
+      build: ./
+      container_name: jaki
+      ports:
+        - "3000:3000"
+      links:
+        - db:db
+      depends_on:
+        - db
+      environment:
+        - DATABASE_HOST=db
+    db:
+      build: ./db
+    mysql:
+        image: mysql:latest
+        volumes:
+            - mysql-data:/var/lib/mysql
+        environment:
+            TZ: 'Asia/Jakarta'
+            MYSQL_ROOT_PASSWORD: password
+        command: ['mysqld', '--character-set-server=utf8']
+        networks:
+            - backend
+volumes:
+    mysql-data:
+
+networks:
+    frontend:
+    backend:

@@ -2,8 +2,21 @@ const fs = require('fs');
 require('dotenv').config();
 const path = require('path');
 const uuid = require('uuid');
-
 const Joi = require('joi');
+
+let dir;
+
+switch (process.env.ENVIRONMENT) {
+  case 'prod':
+    dir =  process.env.DIRECTORY_PROD;
+    break;
+  case 'dev':
+    dir =  process.env.DIRECTORY_DEV;
+    break;
+  default:
+    dir =  process.env.DIRECTORY_DEV;
+    break;
+}
 
 const schema = Joi.object().keys({
   projectName: Joi.string().regex(/^[a-zA-Z0-9_.]+$/).min(3),
@@ -12,7 +25,7 @@ const schema = Joi.object().keys({
 const upload = {
   addUpload: (req, res) => {
     const projectName = req.params.projectName;
-    const newPath = process.env.DIRECTORY_LOCAL + projectName + '/';
+    const newPath = dir + projectName + '/';
 
     const checkDir = new Promise((resolve, reject) => {
       fs.stat(newPath, (err) => {
@@ -69,7 +82,7 @@ const upload = {
       }
     });
 
-    const projectPath = process.env.DIRECTORY_LOCAL + projectName;
+    const projectPath = dir + projectName;
     fs.stat(projectPath, (err) => {
       if (err) {
         fs.mkdir(projectPath, (err) => {

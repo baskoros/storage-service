@@ -1,12 +1,10 @@
-const uploadModel = require('../models/models.upload');
 const fs = require('fs');
 require('dotenv').config();
 const contentDisposition = require('content-disposition');
 const destroy = require('destroy');
 const onFinished = require('on-finished');
 const path = require('path');
-
-let projectName = '';
+const uuid = require('uuid');
 
 const Joi = require('joi');
 
@@ -16,43 +14,49 @@ const schema = Joi.object().keys({
 
 const upload = {
   addUpload: (req, res) => {
-    projectName = req.params.projectName;
-    const newPath = process.env.PROJECT_FOLDER + projectName + process.env.UPLOAD;
-    fs.stat(newPath, (err, stats) => {
-      if (err) {
-        fs.readdir(process.env.DIRECTORY_LOCAL, (err, list) => {
-          if (err) { throw (err); }
-          list.forEach((file) => {
-            if (path.extname(file)) {
-              console.log(file);
-              fs.unlink(process.env.DIRECTORY_LOCAL + file, (err) => {
-                if (err) { console.log(err); }
-              });
-            }
-          });
-        });
+    const projectName = req.params.projectName;
+    const newPath = process.env.DIRECTORY_LOCAL + projectName + '/';
 
-        return res.send({ message: `Tidak menemukan ${projectName}${process.env.UPLOAD}` });
-      }
-      fs.readdir(process.env.DIRECTORY_LOCAL, (err, list) => {
-        if (err) { throw (err); }
-        list.forEach((file) => {
-          if (path.extname(file)) {
-            fs.rename(process.env.OLDPATH + file, process.env.NEWPATH + projectName +
-              process.env.UPLOAD + file, (err) => {
-              if (err) { console.log(err); }
+    const checkDir = new Promise((resolve, reject) => {
+      fs.stat(newPath, (err) => {
+        if (err) {
+          if (err.code === 'ENOENT') {
+            reject({
+              message: 'DirectoryNotExist',
             });
           }
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    const saveFile = () => new Promise((resolve, reject) => {
+      const ext = path.extname(req.files.upload.path);
+      const newFile = newPath + uuid.v4() + ext;
+      fs.rename(req.files.upload.path, newFile, (err) => {
+        if (err) {
+          if (err.code === 'ENOENT') {
+            reject({
+              message: 'DirectoryNotExist',
+            });
+          }
+          reject(err);
+        }
+        resolve({
+          path: newFile,
         });
       });
-      uploadModel.addUpload(req.files.upload)
-        .then((result) => {
-          res.json(200, result);
-        })
-        .catch((error) => {
-          res.json(400, error);
-        });
     });
+
+    checkDir
+      .then(() => saveFile())
+      .then((result) => {
+        res.json(200, result);
+      })
+      .catch((error) => {
+        res.json(400, error);
+      });
   },
 
   downloadProject: (req, res) => {
@@ -120,30 +124,38 @@ const upload = {
   },
 
   makeDirectory: (req, res) => {
-    projectName = req.params.projectName;
+    const projectName = req.params.projectName;
 
-    Joi.validate({ projectName }, schema, (err, value) => {
-      if (err) throw (err.message);
+    Joi.validate({ projectName }, schema, (err) => {
+      if (err) {
+        res.send(400, {
+          message: 'ValidationError',
+          error: err,
+        });
+      }
     });
 
-    const projectPath = process.env.PROJECT_FOLDER + projectName;
-    fs.stat(projectPath, (err, stats) => {
+    const projectPath = process.env.DIRECTORY_LOCAL + projectName;
+    fs.stat(projectPath, (err) => {
       if (err) {
         fs.mkdir(projectPath, (err) => {
           if (err) {
-            return console.error(err);
+            res.send(400, {
+              message: 'DirectoryNotCreated',
+              error: err,
+            });
           }
-          res.send({ message: 'Success make a directory' });
+          res.send(200, {
+            message: 'DirectoryCreated',
+          });
         });
       } else if (projectPath) {
-        res.send({ message: 'Directory has already' });
+        res.send(200, {
+          message: 'DirectoryExists',
+        });
       }
     });
   },
-
-
 };
 
 module.exports = upload;
-
-exports.projectName = projectName;

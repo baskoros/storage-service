@@ -21,14 +21,6 @@ server.use(restify.CORS());
 server.use(restify.authorizationParser());
 server.use(restify.queryParser({ mapParams: true }));
 
-let dir;
-if (process.env.ENVIRONMENT === 'local') {
-  dir = process.env.DIRECTORY_LOCAL;
-} else if (process.env.ENVIRONMENT === 'prod') {
-  dir = process.env.DIRECTORY_PROD;
-} else if (process.env.ENVIRONMENT === 'dev') {
-  dir = process.env.DIRECTORY_DEV;
-}
 
 server.use(restify.bodyParser({
   maxBodySize: 0,
@@ -36,7 +28,6 @@ server.use(restify.bodyParser({
   mapFiles: false,
   overrideParams: false,
   keepExtensions: true,
-  uploadDir: dir,
   multiples: false,
   hash: 'sha1',
 }));

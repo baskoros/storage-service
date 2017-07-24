@@ -33,8 +33,9 @@ const upload = {
 
     const saveFile = () => new Promise((resolve, reject) => {
       const ext = path.extname(req.files.upload.path);
-      const newFile = newPath + uuid.v4() + ext;
-      fs.rename(req.files.upload.path, newFile, (err) => {
+      const newFile = uuid.v4() + ext;
+      const newFilePath = newPath + newFile;
+      fs.rename(req.files.upload.path, newFilePath, (err) => {
         if (err) {
           if (err.code === 'ENOENT') {
             reject({
@@ -44,7 +45,7 @@ const upload = {
           reject(err);
         }
         resolve({
-          path: newFile,
+          path: process.env.DOMAIN + projectName + '/' + newFile,
         });
       });
     });
@@ -57,48 +58,6 @@ const upload = {
       .catch((error) => {
         res.json(400, error);
       });
-  },
-
-  downloadProject: (req, res) => {
-    projectName = req.params.projectName;
-    let filepath = process.env.PROJECT_FOLDER + projectName + process.env.UPLOAD;
-    const filename = req.params.filename;
-    filepath = `${filepath}/${filename}`;
-
-    fs.stat(filepath, (err, stats) => {
-      if (err) {
-        return res.send({ message: `Tidak menemukan ${projectName}${process.env.UPLOAD}${filename}` });
-      }
-      const ext = path.extname(filename);
-      let fileType = '';
-      switch (ext) {
-        case '.png':
-          fileType = 'image/png';
-          break;
-        case '.docx':
-          fileType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-          break;
-        case '.pdf':
-          fileType = 'application/pdf';
-          break;
-        case '.zip':
-          fileType = 'application/zip';
-          break;
-        case '.pptx':
-          fileType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
-          break;
-        default:
-          throw ('EXTENSI SALAH');
-      }
-      res.setHeader('Content-Type', fileType);
-      res.setHeader('Content-Disposition', contentDisposition(filepath));
-
-      const stream = fs.createReadStream(filepath);
-      stream.pipe(res);
-      onFinished(res, (err) => {
-        destroy(stream);
-      });
-    });
   },
 
   deleteProject: (req, res) => {

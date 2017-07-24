@@ -1,0 +1,4 @@
+apps:
+  - script   : 'index.js'
+    name     : 'storage-service'
+    exec_mode: 'fork'

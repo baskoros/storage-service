@@ -1,33 +1,19 @@
 FROM node:6.11
 
-# RUN mkdir -p /opt/iron  
-# WORKDIR /opt/iron  
-# VOLUME /opt/iron
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-# COPY ./docker/node-entrypoint.sh /entrypoint.sh  
-# ENTRYPOINT [ "/entrypoint.sh" ]
+# Install app dependencies
+COPY package.json /usr/src/app/
+RUN npm install
 
-ADD . /app
+RUN npm install --production
 
-# ENV DB_HOST localhost
-# ENV DB_DATABASE jktnxt
-# ENV DB_USER root
-# ENV DB_PASSWORD sembarang
-# ENV DB_PORT 3306
-# ENV DIRECTORY ./upload
-# ENV PORT 3000
+RUN npm install pm2 -g
+# Bundle app source
+COPY . /usr/src/app
 
-# COPY .env /app
+EXPOSE 3300
 
-RUN cd /app; \
-    npm install --production
-
-
-
-EXPOSE 3000
-
-# CMD [ "npm", "install" ]
-
-# EXPOSE 8080 
-
-CMD ["node", "/app/index.js"]
+CMD ["pm2-docker", "index.js"]

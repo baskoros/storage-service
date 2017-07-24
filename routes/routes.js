@@ -11,13 +11,10 @@ module.exports = (server) => {
     }
   };
 
-  server.get('/secret', isAuthorized, (req, res) => {
-    res.send('mengakses file secret');
-  });
   server.post(':projectName/upload', isAuthorized, uploadController.addUpload);
   server.get(/\/?.*/, restify.serveStatic({
     directory: './upload',
     default: 'index.html',
   }));
-  server.post(':projectName', isAuthorized , uploadController.makeDirectory);
+  server.post(':projectName', isAuthorized, uploadController.makeDirectory);
 };

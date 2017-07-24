@@ -1,6 +1,6 @@
 require('dotenv').config();
 const restify = require('restify');
-const restifyOAuth2 = require('restify-oauth2');
+const oauth2 = require('restify-oauth2');
 const models = require('./models/auth');
 
 const server = restify.createServer({
@@ -32,7 +32,10 @@ server.use(restify.bodyParser({
   hash: 'sha1',
 }));
 
-restifyOAuth2.cc(server, { tokenEndpoint: '/oauth/token', hooks: models });
+oauth2.cc(server, {
+  tokenEndpoint: '/oauth/token',
+  hooks: models,
+});
 
 routes(server);
 

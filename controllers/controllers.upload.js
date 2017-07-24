@@ -42,7 +42,7 @@ const upload = {
           reject(err);
         }
         resolve({
-          path: process.env.DOMAIN + projectName + '/' + newFile,
+          url: process.env.DOMAIN + projectName + '/' + newFile,
         });
       });
     });

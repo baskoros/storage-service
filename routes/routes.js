@@ -19,6 +19,5 @@ module.exports = (server) => {
     directory: './upload',
     default: 'index.html',
   }));
-  server.del(':projectName/delete/:filename', isAuthorized, uploadController.deleteProject);
   server.post(':projectName', isAuthorized , uploadController.makeDirectory);
 };

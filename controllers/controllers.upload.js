@@ -1,8 +1,5 @@
 const fs = require('fs');
 require('dotenv').config();
-const contentDisposition = require('content-disposition');
-const destroy = require('destroy');
-const onFinished = require('on-finished');
 const path = require('path');
 const uuid = require('uuid');
 
@@ -58,28 +55,6 @@ const upload = {
       .catch((error) => {
         res.json(400, error);
       });
-  },
-
-  deleteProject: (req, res) => {
-    projectName = req.params.projectName;
-    let filepath = process.env.PROJECT_FOLDER + projectName + process.env.UPLOAD;
-    const filename = req.params.filename;
-    filepath = `${filepath}/${filename}`;
-    console.log(filepath);
-
-    fs.stat(filepath, (err, stats) => {
-      if (err) {
-        return res.send({ message: `Tidak menemukan ${projectName}${process.env.UPLOAD}${filename}` });
-      }
-      fs.unlink(filepath, (err) => {
-        if (err) {
-          return console.error(err);
-        }
-        res.send({
-          message: `Success to Delete ${req.params.filename}`,
-        });
-      });
-    });
   },
 
   makeDirectory: (req, res) => {

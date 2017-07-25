@@ -3,6 +3,7 @@ require('dotenv').config();
 const path = require('path');
 const uuid = require('uuid');
 const Joi = require('joi');
+// const detectChar = require('detect-character-encoding');
 
 let dir;
 
@@ -55,7 +56,19 @@ const upload = {
           reject(err);
         }
         resolve({
-          url: process.env.DOMAIN + projectName + '/' + newFile,
+          status: "success",
+          message: "File uploaded",
+          images: {
+              "fieldname": "file",
+              "originalname": req.files.upload.name,
+              "encoding": "7bit",
+              "mimetype": req.files.upload.type,
+              "destination": dir,
+              "filename": newFile,
+              "path": req.files.upload.path,
+              "URL": process.env.DOMAIN + projectName + '/' + newFile,
+              "size": req.files.upload.size
+            }
         });
       });
     });

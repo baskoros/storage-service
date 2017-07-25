@@ -11,6 +11,11 @@ module.exports = (server) => {
     }
   };
 
+  // TESTING
+  server.get('/', isAuthorized, function(req, res){
+    res.send({message : 'good'});
+  });
+
   server.post(':projectName/upload', isAuthorized, uploadController.addUpload);
   server.get(/\/?.*/, restify.serveStatic({
     directory: './upload',

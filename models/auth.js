@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const db = require('../config/database/config.database.app');
+const moment = require('moment');
 
 function generateToken(data) {
   const random = Math.floor(Math.random() * 100001);
@@ -7,6 +8,9 @@ function generateToken(data) {
   const sha256 = crypto.createHmac('sha256', `${random}WOO${timestamp}`);
   return sha256.update(data).digest('base64');
 }
+
+let today = moment();
+let tomorrow = today.add(1, 'day');
 
 exports.grantClientToken = (credentials, req, cb) => {
   db.select('clientId', 'clientSecret')
@@ -24,28 +28,37 @@ exports.grantClientToken = (credentials, req, cb) => {
         (database[0].clientId === credentials.clientId);
       if (isValid) {
         const token = generateToken(`${credentials.clientId}:${credentials.clientSecret}`);
-        return token;
+        const new_input = {
+          clientId : database[0].clientId,
+          token : token,
+          expiresIn : tomorrow.format("YYYY-MM-DD HH:mm:ss"),
+        }
+        return new_input;
       }
     })
     .then((result) => {
-      db.where('clientId', credentials.clientId)
-        .update('token', result)
-        .from('clients')
-        .then(cb(null, result));
+      db.insert(result).into('tokens')
+        .then(cb(null, result.token));
     })
     .catch(() => cb(null, false));
 };
 
 exports.authenticateToken = (token, req, cb) => {
-  db.select('token', 'clientId')
-    .from('clients')
+  db.select('token', 'expiresIn')
+    .from('tokens')
     .where('token', token)
+    .andWhere('id', 'in', db('tokens').max('id'))
     .then((result) => {
-      if (result[0].token === token) {
+      const time_query = moment(result[0].expiresIn).format("YYYY-MM-DD HH:mm:ss");
+      today = moment().format("YYYY-MM-DD HH:mm:ss");
+      isValid = time_query >= today;
+      if (result[0].token === token && isValid) {
         req.passport = true;
         return true;
       }
-      return false;
+      else {
+        return false;
+      }
     })
     .then(result => cb(null, result))
     .catch(error => cb(null, error));

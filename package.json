@@ -1,7 +1,7 @@
 {
-  "name": "jktnxt",
+  "name": "storage-service",
   "version": "1.0.0",
-  "description": "JKTNXT Backend API",
+  "description": "Storage service",
   "main": "index.js",
   "dependencies": {
     "@google/maps": "^0.1.0",
@@ -60,17 +60,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://git.smartcity.jakarta.go.id/faisalrahman/jktnxt.git"
+    "url": "https://github.com/baskoros/storage-service.git"
   },
   "keywords": [
     "jktnxt"
   ],
-  "author": "faizal.btg@gmail.com",
-  "license": "ISC",
+  "author": "baskoro.susanto@gmail.com",
+  "license": "GPL",
   "apidoc": {
-    "title": "Jaki's Documentation",
-    "name": "Jaki's Documentation",
+    "title": "Storage service documentation",
+    "name": "Storage service documentation",
     "version": "0.1.0",
-    "description": "Documentation from Jaki's project"
+    "description": "Storage service documentation"
   }
 }

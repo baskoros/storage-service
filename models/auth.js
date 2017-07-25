@@ -1,5 +1,10 @@
 const crypto = require('crypto');
 const db = require('../config/database/config.database.app');
+const moment = require('moment')
+
+let today
+let tomorrow
+
 
 function generateToken(data) {
   const random = Math.floor(Math.random() * 100001);
@@ -28,20 +33,28 @@ exports.grantClientToken = (credentials, req, cb) => {
       }
     })
     .then((result) => {
+      today = moment()
+      tomorrow = today.add(1, 'days')
+      const tokenkObject = {
+        token: result,
+        expiresIn: tomorrow.format("YYYY-MM-DD HH:mm:ss")
+      };
       db.where('clientId', credentials.clientId)
-        .update('token', result)
-        .from('clients')
+        .update(tokenkObject)
+        .from('token')
         .then(cb(null, result));
     })
     .catch(() => cb(null, false));
 };
 
 exports.authenticateToken = (token, req, cb) => {
-  db.select('token', 'clientId')
-    .from('clients')
+  db.select('token', 'clientId', 'expiresIn')
+    .from('token')
     .where('token', token)
     .then((result) => {
-      if (result[0].token === token) {
+      const time = moment(result[0].expiresIn).format("YYYY-MM-DD HH:mm:ss")
+      today = moment().format("YYYY-MM-DD HH:mm:ss")
+      if (result[0].token === token && time >= today) {
         req.passport = true;
         return true;
       }

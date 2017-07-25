@@ -14,7 +14,7 @@ switch (process.env.ENVIRONMENT) {
     dir =  process.env.DIRECTORY_DEV;
     break;
   default:
-    dir =  process.env.DIRECTORY_DEV;
+    dir =  process.env.DIRECTORY_LOCAL;
     break;
 }
 
@@ -55,6 +55,18 @@ const upload = {
           reject(err);
         }
         resolve({
+          status: "success",
+          message: "File Upload",
+          images: {
+            fieldname: "file",
+            originalname: req.files.upload.name,
+            encoding: "7bit",
+            mimetype: req.files.upload.type,
+            destination: dir,
+            filename: newFile,
+            path: newFilePath,
+            size: req.files.upload.size
+          },
           url: process.env.DOMAIN + projectName + '/' + newFile,
         });
       });

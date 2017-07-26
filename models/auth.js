@@ -47,7 +47,6 @@ exports.authenticateToken = (token, req, cb) => {
   db.select('token', 'expiresIn')
     .from('tokens')
     .where('token', token)
-    .andWhere('id', 'in', db('tokens').max('id'))
     .then((result) => {
       const time_query = moment(result[0].expiresIn).format("YYYY-MM-DD HH:mm:ss");
       today = moment().format("YYYY-MM-DD HH:mm:ss");

@@ -29,7 +29,7 @@ exports.grantClientToken = (credentials, req, cb) => {
         (database[0].clientId === credentials.clientId);
       if (isValid) {
         today = moment()
-        tomorrow = today.add(1, 'days')
+        tomorrow = today.add(2, process.env.EXPIRED)
         const token = generateToken(`${credentials.clientId}:${credentials.clientSecret}`);
         const newClient = {
           clientId: database[0].clientId,

@@ -60,7 +60,6 @@ const upload = {
           images: {
             fieldname: "file",
             originalname: req.files.upload.name,
-            encoding: "7bit",
             mimetype: req.files.upload.type,
             destination: dir,
             filename: newFile,

@@ -10,7 +10,9 @@ function generateToken(data) {
 }
 
 let today = moment();
-let tomorrow = today.add(1, 'day');
+// If not working use this
+// let tomorrow = today.add(1, 'day');
+let tomorrow = today.add(process.env.DURATION, process.env.DURATION_TIME);
 
 exports.grantClientToken = (credentials, req, cb) => {
   db.select('clientId', 'clientSecret')

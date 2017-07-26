@@ -28,21 +28,22 @@ exports.grantClientToken = (credentials, req, cb) => {
       const isValid = database[0].clientSecret === credentials.clientSecret &&
         (database[0].clientId === credentials.clientId);
       if (isValid) {
+        today = moment()
+        tomorrow = today.add(1, 'days')
         const token = generateToken(`${credentials.clientId}:${credentials.clientSecret}`);
-        return token;
+        const newClient = {
+          clientId: database[0].clientId,
+          token: token,
+          expiresIn: tomorrow.format("YYYY-MM-DD HH:mm:ss")
+        }
+        // const token = generateToken(`${credentials.clientId}:${credentials.clientSecret}`);
+        return newClient;
       }
     })
     .then((result) => {
-      today = moment()
-      tomorrow = today.add(1, 'days')
-      const tokenkObject = {
-        token: result,
-        expiresIn: tomorrow.format("YYYY-MM-DD HH:mm:ss")
-      };
-      db.where('clientId', credentials.clientId)
-        .update(tokenkObject)
-        .from('token')
-        .then(cb(null, result));
+      db.insert(result)
+        .into('token')
+        .then(cb(null, result.token));
     })
     .catch(() => cb(null, false));
 };

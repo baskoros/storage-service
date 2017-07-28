@@ -35,6 +35,7 @@ server.use(restify.bodyParser({
 oauth2.cc(server, {
   tokenEndpoint: '/oauth/token',
   hooks: models,
+  tokenExpirationTime: '2 Minggu'
 });
 
 routes(server);

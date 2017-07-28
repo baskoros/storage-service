@@ -1,5 +1,10 @@
 const crypto = require('crypto');
 const db = require('../config/database/config.database.app');
+const moment = require('moment')
+
+let today
+let tomorrow
+
 
 function generateToken(data) {
   const random = Math.floor(Math.random() * 100001);
@@ -23,25 +28,34 @@ exports.grantClientToken = (credentials, req, cb) => {
       const isValid = database[0].clientSecret === credentials.clientSecret &&
         (database[0].clientId === credentials.clientId);
       if (isValid) {
+        today = moment()
+        tomorrow = today.add(2, process.env.EXPIRED)
         const token = generateToken(`${credentials.clientId}:${credentials.clientSecret}`);
-        return token;
+        const newClient = {
+          clientId: database[0].clientId,
+          token: token,
+          expiresIn: tomorrow.format("YYYY-MM-DD HH:mm:ss")
+        }
+        // const token = generateToken(`${credentials.clientId}:${credentials.clientSecret}`);
+        return newClient;
       }
     })
     .then((result) => {
-      db.where('clientId', credentials.clientId)
-        .update('token', result)
-        .from('clients')
-        .then(cb(null, result));
+      db.insert(result)
+        .into('token')
+        .then(cb(null, result.token));
     })
     .catch(() => cb(null, false));
 };
 
 exports.authenticateToken = (token, req, cb) => {
-  db.select('token', 'clientId')
-    .from('clients')
+  db.select('token', 'clientId', 'expiresIn')
+    .from('token')
     .where('token', token)
     .then((result) => {
-      if (result[0].token === token) {
+      const time = moment(result[0].expiresIn).format("YYYY-MM-DD HH:mm:ss")
+      today = moment().format("YYYY-MM-DD HH:mm:ss")
+      if (result[0].token === token && time >= today) {
         req.passport = true;
         return true;
       }

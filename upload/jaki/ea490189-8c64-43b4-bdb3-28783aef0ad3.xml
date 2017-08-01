@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.fahrizal.spirititk">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SplashScreen"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".GroupTeam"
+            android:label="@string/title_activity_group_team"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TeamDev"
+            android:label="@string/title_activity_team_dev"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TentangITK"
+            android:label="@string/title_activity_tentang_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ProdiITK"
+            android:label="@string/title_activity_prodi_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FisikaITK"
+            android:label="@string/title_activity_fisika_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MatematikaITK"
+            android:label="@string/title_activity_matematika_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TeknikMesin"
+            android:label="@string/title_activity_teknik_mesin"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TeknikElektro"
+            android:label="@string/title_activity_teknik_elektro"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TeknikKimia"
+            android:label="@string/title_activity_teknik_kimia"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TeknikMaterial"
+            android:label="@string/title_activity_teknik_material"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TeknikSipil"
+            android:label="@string/title_activity_teknik_sipil"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PwkITK"
+            android:label="@string/title_activity_pwk_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TeknikPerkapalan"
+            android:label="@string/title_activity_teknik_perkapalan"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SistemInformasi"
+            android:label="@string/title_activity_sistem_informasi"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FasilitasITK"
+            android:label="@string/title_activity_fasilitas_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".JalurMasuk"
+            android:label="@string/title_activity_jalur_masuk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SnmptnItk"
+            android:label="@string/title_activity_snmptn_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SbmptnItk"
+            android:label="@string/title_activity_sbmptn_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UmItk"
+            android:label="@string/title_activity_um_itk"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".JalurPendaftaran"
+            android:label="@string/title_activity_jalur_pendaftaran"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>

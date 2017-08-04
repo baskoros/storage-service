@@ -12,8 +12,10 @@
     "body-parser": "^1.15.1",
     "cache-manager": "^2.1.2",
     "cache-manager-redis": "^0.4.0",
+    "chai-http": "^3.0.0",
     "cluster": "^0.7.7",
     "content-disposition": "^0.5.2",
+    "cookiejar": "^2.1.1",
     "db-migrate": "^0.10.0-beta.21",
     "db-migrate-mysql": "^1.1.10",
     "dbgeo": "^1.0.1",
@@ -44,7 +46,7 @@
     "restify-oauth2": "^4.0.4",
     "slack-node": "^0.2.0",
     "socket.io": "^1.7.3",
-    "supertest": "^2.0.1",
+    "superagent": "^3.5.2",
     "terraformer": "^1.0.7",
     "topojson": "^3.0.0",
     "uuid": "^3.1.0",
@@ -54,12 +56,13 @@
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "chai": "^3.5.0",
-    "mocha": "^3.0.2",
-    "supertest": "^2.0.0"
+    "chakram": "^1.5.0",
+    "mocha": "^3.5.0",
+    "supertest": "^2.0.1"
   },
   "scripts": {
     "start": "node index.js",
-    "test": "./node_modules/.bin/mocha ./test/*/*.test.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

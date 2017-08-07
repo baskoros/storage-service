@@ -5,6 +5,10 @@ const moment = require('moment')
 let today
 let tomorrow
 
+const md5 = require('md5')
+
+const bcrypt = require('bcrypt')
+
 
 function generateToken(data) {
   const random = Math.floor(Math.random() * 100001);
@@ -25,8 +29,16 @@ exports.grantClientToken = (credentials, req, cb) => {
       return database;
     })
     .then((database) => {
-      const isValid = database[0].clientSecret === credentials.clientSecret &&
-        (database[0].clientId === credentials.clientId);
+      // let secret = md5(credentials.clientSecret)
+      let secret = bcrypt.compareSync(credentials.clientSecret, database[0].clientSecret)
+
+      const isValid = secret && (database[0].clientId === credentials.clientId);
+
+      // const isValid = database[0].clientSecret === secret &&
+      //   (database[0].clientId === credentials.clientId);
+
+      // const isValid = database[0].clientSecret === credentials.clientSecret &&
+      //   (database[0].clientId === credentials.clientId);
       if (isValid) {
         today = moment()
         tomorrow = today.add(2, process.env.EXPIRED)

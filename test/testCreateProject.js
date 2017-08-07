@@ -3,7 +3,7 @@ const chakram = require('chakram')
 let projectName = 'jaki'
     , options = {
         headers: {
-            Authorization: 'Bearer VeTE1v2Vgy7pSqdUCs+4U+x77IMuTvcwev3+bB9SwjU='
+            Authorization: 'Bearer 5VKFF5qQ+FuBZJZcav05NMg9tAasRUjteOdM/fsFZGY='
         }
     }
 
